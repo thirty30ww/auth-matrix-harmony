@@ -1,24 +1,8 @@
 {
   "app": {
-    "signingConfigs": [
-      {
-        "name": "default",
-        "type": "HarmonyOS",
-        "material": {
-          "certpath": "C:\\Users\\Merrick\\.ohos\\config\\default_harmony_9ujzf0SqPIHpreIfuI5nsWL8Jsir45O-GjCWW-r7gho=.cer",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B0FF8A33DAAC9705DCB4CF6B26D0EBD528BAD418BB5565D696DD67EEF141EF0152F42FA5870051C",
-          "profile": "C:\\Users\\Merrick\\.ohos\\config\\default_harmony_9ujzf0SqPIHpreIfuI5nsWL8Jsir45O-GjCWW-r7gho=.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\Merrick\\.ohos\\config\\default_harmony_9ujzf0SqPIHpreIfuI5nsWL8Jsir45O-GjCWW-r7gho=.p12",
-          "storePassword": "0000001BDABA2C7655A22E3FC3DCEE5972B872D9F5F1E4ED5A419C4BD79FD7E08A33AD0ED444942328ED2A"
-        }
-      }
-    ],
     "products": [
       {
         "name": "default",
-        "signingConfig": "default",
         "targetSdkVersion": "6.0.1(21)",
         "compatibleSdkVersion": "6.0.1(21)",
         "runtimeOS": "HarmonyOS",
@@ -32,12 +16,13 @@
     ],
     "buildModeSet": [
       {
-        "name": "debug",
+        "name": "debug"
       },
       {
         "name": "release"
       }
-    ]
+    ],
+    "signingConfigs": []
   },
   "modules": [
     {

@@ -59,7 +59,7 @@ export class QueryParams {
 }
 
 export class HttpClient {
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = 'http://10.200.1.146:8080';
   private accessToken: string = '';
   private refreshHandler: RefreshHandler | null = null;
   private refreshingPromise: Promise<boolean> | null = null;
