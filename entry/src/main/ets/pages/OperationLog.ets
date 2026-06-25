@@ -284,63 +284,52 @@ export struct OperationLogTab {
   }
 
   @Builder
-  private DetailPanel(log: LogOperationVO): void {
+  private DetailSheet() {
     Column() {
-      Row() {
-        Text('操作日志详情')
-          .fontSize(18)
-          .fontWeight(FontWeight.Bold)
-          .fontColor($r('app.color.app_text_primary'))
-          .layoutWeight(1)
-
-        Button('关闭')
-          .height(34)
-          .fontSize(13)
-          .fontColor($r('app.color.app_primary'))
-          .backgroundColor(Color.Transparent)
-          .onClick(() => {
-            this.closeDetail()
-          })
-      }
-      .width('100%')
-      .padding({ left: 18, right: 18, top: 16, bottom: 10 })
+      Text('操作日志详情')
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .fontColor($r('app.color.app_text_primary'))
+        .width('100%')
+        .padding({ left: 18, right: 18, top: 12, bottom: 10 })
 
       Scroll() {
         Column({ space: 8 }) {
-          if (this.detailLoading) {
-            Text('刷新详情中...')
+          if (this.detailLoading || this.detail === null) {
+            Text('加载中...')
               .fontSize(12)
               .fontColor($r('app.color.app_text_secondary'))
               .width('100%')
-          }
+              .padding(18)
+          } else {
+            this.SectionTitle($r('app.media.ic_file_text_active'), '基本信息')
+            this.DetailRow('日志ID', String(this.detail.id))
+            this.DetailRow('操作人', this.detail.name || '未知')
+            this.DetailRow('模块', this.detail.module || '-')
+            this.DetailRow('操作描述', this.detail.description || '无描述')
 
-          this.SectionTitle($r('app.media.ic_file_text_active'), '基本信息')
-          this.DetailRow('日志ID', String(log.id))
-          this.DetailRow('操作人', log.name || '未知')
-          this.DetailRow('模块', log.module || '-')
-          this.DetailRow('操作描述', log.description || '无描述')
+            this.SectionTitle($r('app.media.ic_terminal_active'), '请求信息')
+            this.DetailRow('操作类型', this.detail.type || '-', $r('app.color.app_primary'))
+            this.DetailRow('请求方法', this.detail.method || '-', $r('app.color.app_primary'))
+            this.DetailRow('状态码', String(this.detail.code), this.statusColor(this.detail.code))
+            this.DetailRow('IP地址', this.detail.ip || '-')
+            this.DetailRow('请求路径', this.detail.url || '-')
 
-          this.SectionTitle($r('app.media.ic_terminal_active'), '请求信息')
-          this.DetailRow('操作类型', log.type || '-', $r('app.color.app_primary'))
-          this.DetailRow('请求方法', log.method || '-', $r('app.color.app_primary'))
-          this.DetailRow('状态码', String(log.code), this.statusColor(log.code))
-          this.DetailRow('IP地址', log.ip || '-')
-          this.DetailRow('请求路径', log.url || '-')
+            this.SectionTitle($r('app.media.ic_timer_active'), '时间信息')
+            this.DetailRow('操作时间', `${this.detail.operateTime}ms`)
+            this.DetailRow('创建时间', this.detail.createTime || '-')
 
-          this.SectionTitle($r('app.media.ic_timer_active'), '时间信息')
-          this.DetailRow('操作时间', `${log.operateTime}ms`)
-          this.DetailRow('创建时间', log.createTime || '-')
+            if (this.detail.requestParam) {
+              this.ParamBlock('请求参数', this.detail.requestParam)
+            }
 
-          if (log.requestParam) {
-            this.ParamBlock('请求参数', log.requestParam)
-          }
+            if (this.detail.responseParam) {
+              this.ParamBlock('响应参数', this.detail.responseParam)
+            }
 
-          if (log.responseParam) {
-            this.ParamBlock('响应参数', log.responseParam)
-          }
-
-          if (log.errorMessage) {
-            this.ParamBlock('错误信息', log.errorMessage, true)
+            if (this.detail.errorMessage) {
+              this.ParamBlock('错误信息', this.detail.errorMessage, true)
+            }
           }
         }
         .padding({ left: 18, right: 18, bottom: 24 })
@@ -349,29 +338,6 @@ export struct OperationLogTab {
       .layoutWeight(1)
     }
     .width('100%')
-    .height('82%')
-    .backgroundColor($r('app.color.app_card_bg'))
-    .borderRadius({ topLeft: 24, topRight: 24 })
-  }
-
-  @Builder
-  private DetailOverlay(): void {
-    Stack({ alignContent: Alignment.Bottom }) {
-      Stack() {
-      }
-      .width('100%')
-      .height('100%')
-      .backgroundColor('#66000000')
-      .onClick(() => {
-        this.closeDetail()
-      })
-
-      if (this.detail !== null) {
-        this.DetailPanel(this.detail)
-      }
-    }
-    .width('100%')
-    .height('100%')
   }
 
   build() {
@@ -473,11 +439,15 @@ export struct OperationLogTab {
       .backgroundColor($r('app.color.app_bg'))
       .width('100%')
       .height('100%')
-
-      if (this.detailVisible) {
-        this.DetailOverlay()
-      }
     }
+    .bindSheet($$this.detailVisible, this.DetailSheet(), {
+      detents: [SheetSize.LARGE],
+      radius: { topLeft: 24, topRight: 24 },
+      backgroundColor: $r('app.color.app_card_bg'),
+      onDisappear: () => {
+        this.closeDetail()
+      }
+    })
     .backgroundColor($r('app.color.app_bg'))
     .width('100%')
     .height('100%')
