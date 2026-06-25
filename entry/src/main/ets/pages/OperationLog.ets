@@ -85,7 +85,7 @@ export struct OperationLogTab {
   }
 
   private async openDetail(log: LogOperationVO): Promise<void> {
-    this.detail = log
+    this.detail = null
     this.detailVisible = true
     this.detailLoading = true
     try {
@@ -93,6 +93,8 @@ export struct OperationLogTab {
     } catch (e) {
       const err = e as Error
       promptAction.showToast({ message: err.message || '获取操作日志详情失败' })
+      this.closeDetail()
+      return
     } finally {
       this.detailLoading = false
     }
