@@ -1,4 +1,4 @@
-import { router } from '@kit.ArkUI'
+import { promptAction, router } from '@kit.ArkUI'
 import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { fileApi } from '../services/api/system'
 import { UpdateUserDTO, userApi, UserVO } from '../services/api/user'
@@ -72,13 +72,10 @@ struct EditProfile {
       const currentVersion = AppStorage.get('profileRefreshVersion') as number || 0
       AppStorage.setOrCreate('profileRefreshVersion', currentVersion + 1)
       this.saving = false
-      router.replaceUrl({
-        url: 'pages/Profile',
-        params: {
-          toastMessage: '个人信息修改成功',
-          toastKey: new Date().getTime().toString()
-        }
-      })
+      promptAction.showToast({ message: '个人信息修改成功', duration: 1500 })
+      setTimeout(() => {
+        router.back()
+      }, 400)
     } catch (e) {
       const err = e as Error
       this.showError(err.message || '保存失败')

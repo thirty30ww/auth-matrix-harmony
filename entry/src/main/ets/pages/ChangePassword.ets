@@ -1,4 +1,4 @@
-import { router } from '@kit.ArkUI'
+import { promptAction, router } from '@kit.ArkUI'
 import { ChangePasswordDTO, userApi } from '../services/api/user'
 
 @Entry
@@ -48,13 +48,10 @@ struct ChangePassword {
       const currentVersion = AppStorage.get('profileRefreshVersion') as number || 0
       AppStorage.setOrCreate('profileRefreshVersion', currentVersion + 1)
       this.saving = false
-      router.replaceUrl({
-        url: 'pages/Profile',
-        params: {
-          toastMessage: '密码修改成功',
-          toastKey: new Date().getTime().toString()
-        }
-      })
+      promptAction.showToast({ message: '密码修改成功', duration: 1500 })
+      setTimeout(() => {
+        router.back()
+      }, 400)
     } catch (e) {
       const err = e as Error
       this.showError(err.message || '修改密码失败')

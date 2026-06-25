@@ -4,14 +4,11 @@ import { AuthStore } from '../stores/authStore'
 
 const authStore = AuthStore.getInstance()
 
-@Entry
 @Component
-struct Profile {
+export struct ProfileTab {
   @State user: UserVO | null = null
   @State loading: boolean = false
   @State errorText: string = ''
-  @State routeToastKey: string = ''
-  @State pendingToastKey: string = ''
   @StorageLink('profileRefreshVersion') @Watch('onProfileRefresh') profileRefreshVersion: number = 0
   @StorageLink('accessToken') @Watch('onAccessTokenChange') accessToken: string = ''
 
@@ -20,11 +17,6 @@ struct Profile {
       router.replaceUrl({ url: 'pages/Login' })
       return
     }
-    this.loadUser()
-  }
-
-  onPageShow(): void {
-    this.showRouteToast()
     this.loadUser()
   }
 
@@ -64,40 +56,6 @@ struct Profile {
       const err = e as Error
       promptAction.showToast({ message: err.message || '退出登录失败' })
     }
-  }
-
-  private showRouteToast(): void {
-    const rawParams = router.getParams()
-    if (rawParams === null || rawParams === undefined) {
-      return
-    }
-
-    const params = rawParams as object as Record<string, string>
-    const message = params['toastMessage'] || ''
-    const key = params['toastKey'] || ''
-    if (!message || !key || key === this.routeToastKey || key === this.pendingToastKey) {
-      return
-    }
-
-    this.pendingToastKey = key
-    setTimeout(() => {
-      try {
-        this.getUIContext().getPromptAction().showToast({ message })
-        this.routeToastKey = key
-      } catch (e) {
-        try {
-          promptAction.showToast({ message })
-          this.routeToastKey = key
-        } catch (fallbackError) {
-          void e
-          void fallbackError
-        }
-      } finally {
-        if (this.pendingToastKey === key) {
-          this.pendingToastKey = ''
-        }
-      }
-    }, 100)
   }
 
   private getRoleNames(): string {
@@ -272,22 +230,6 @@ struct Profile {
   }
 
   @Builder
-  private BottomNav(): void {
-    Column() {
-      Row() {
-        this.TabItem($r('app.media.ic_user_active'), '个人主页', 'pages/Profile', true)
-        this.TabItem($r('app.media.ic_list'), '操作日志', 'pages/OperationLog', false)
-        this.TabItem($r('app.media.ic_clock'), '登录日志', 'pages/LoginLog', false)
-      }
-      .height(56)
-      .width('100%')
-    }
-    .width('100%')
-    .backgroundColor($r('app.color.app_card_bg'))
-    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
-  }
-
-  @Builder
   private ActionItem(icon: Resource, title: string, description: string, url: string): void {
     Row({ space: 12 }) {
       Stack() {
@@ -379,32 +321,6 @@ struct Profile {
     .margin({ top: 18 })
   }
 
-  @Builder
-  private TabItem(icon: Resource, title: string, url: string, active: boolean): void {
-    Column({ space: 3 }) {
-      Stack() {
-        Image(icon)
-          .width(20)
-          .height(20)
-      }
-      .width(24)
-      .height(24)
-
-      Text(title)
-        .fontSize(12)
-        .fontWeight(active ? FontWeight.Bold : FontWeight.Regular)
-        .fontColor(active ? $r('app.color.app_primary') : $r('app.color.app_text_secondary'))
-    }
-    .layoutWeight(1)
-    .height('100%')
-    .justifyContent(FlexAlign.Center)
-    .onClick(() => {
-      if (!active) {
-        router.replaceUrl({ url })
-      }
-    })
-  }
-
   build() {
     Column() {
       this.HeaderHero()
@@ -440,12 +356,9 @@ struct Profile {
       .layoutWeight(1)
       .width('100%')
       .backgroundColor($r('app.color.app_bg'))
-
-      this.BottomNav()
     }
     .backgroundColor($r('app.color.app_bg'))
     .width('100%')
     .height('100%')
-    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP])
   }
 }

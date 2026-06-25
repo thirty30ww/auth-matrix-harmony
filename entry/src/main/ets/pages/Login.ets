@@ -29,7 +29,7 @@ struct Index {
     if (!this.accessToken) {
       return
     }
-    router.replaceUrl({ url: 'pages/Profile' })
+    router.replaceUrl({ url: 'pages/TabHome' })
   }
 
   private canSubmit(): boolean {
@@ -52,7 +52,7 @@ struct Index {
     try {
       await authStore.login(this.username.trim(), this.password)
       promptAction.showToast({ message: '登录成功' })
-      router.replaceUrl({ url: 'pages/Profile' })
+      router.replaceUrl({ url: 'pages/TabHome' })
     } catch (e) {
       const err = e as Error
       const msg = err.message || '登录失败'

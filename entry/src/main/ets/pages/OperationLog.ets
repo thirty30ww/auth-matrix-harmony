@@ -1,9 +1,8 @@
 import { promptAction, router } from '@kit.ArkUI'
 import { LogOperationDTO, LogOperationVO, logApi, PageQueryDTO } from '../services/api/log'
 
-@Entry
 @Component
-struct OperationLog {
+export struct OperationLogTab {
   @State logs: LogOperationVO[] = []
   @State keyword: string = ''
   @State pageNum: number = 1
@@ -373,48 +372,6 @@ struct OperationLog {
     .height('100%')
   }
 
-  @Builder
-  private BottomNav(): void {
-    Column() {
-      Row() {
-      this.TabItem($r('app.media.ic_user'), '个人主页', 'pages/Profile', false)
-      this.TabItem($r('app.media.ic_list_active'), '操作日志', 'pages/OperationLog', true)
-      this.TabItem($r('app.media.ic_clock'), '登录日志', 'pages/LoginLog', false)
-      }
-      .height(56)
-      .width('100%')
-    }
-    .width('100%')
-    .backgroundColor($r('app.color.app_card_bg'))
-    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
-  }
-
-  @Builder
-  private TabItem(icon: Resource, title: string, url: string, active: boolean): void {
-    Column({ space: 3 }) {
-      Stack() {
-        Image(icon)
-          .width(20)
-          .height(20)
-      }
-      .width(24)
-      .height(24)
-
-      Text(title)
-        .fontSize(12)
-        .fontWeight(active ? FontWeight.Bold : FontWeight.Regular)
-        .fontColor(active ? $r('app.color.app_primary') : $r('app.color.app_text_secondary'))
-    }
-    .layoutWeight(1)
-    .height('100%')
-    .justifyContent(FlexAlign.Center)
-    .onClick(() => {
-      if (!active) {
-        router.replaceUrl({ url })
-      }
-    })
-  }
-
   build() {
     Stack() {
       Column() {
@@ -510,8 +467,6 @@ struct OperationLog {
           }
           .layoutWeight(1)
           .backgroundColor($r('app.color.app_bg'))
-
-        this.BottomNav()
       }
       .backgroundColor($r('app.color.app_bg'))
       .width('100%')
