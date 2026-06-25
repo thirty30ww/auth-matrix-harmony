@@ -73,9 +73,7 @@ struct EditProfile {
       AppStorage.setOrCreate('profileRefreshVersion', currentVersion + 1)
       this.saving = false
       promptAction.showToast({ message: '个人信息修改成功', duration: 1500 })
-      setTimeout(() => {
-        router.back()
-      }, 400)
+      router.back()
     } catch (e) {
       const err = e as Error
       this.showError(err.message || '保存失败')

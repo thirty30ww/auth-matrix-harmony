@@ -49,9 +49,7 @@ struct ChangePassword {
       AppStorage.setOrCreate('profileRefreshVersion', currentVersion + 1)
       this.saving = false
       promptAction.showToast({ message: '密码修改成功', duration: 1500 })
-      setTimeout(() => {
-        router.back()
-      }, 400)
+      router.back()
     } catch (e) {
       const err = e as Error
       this.showError(err.message || '修改密码失败')
