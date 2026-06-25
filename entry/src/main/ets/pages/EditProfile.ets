@@ -15,9 +15,20 @@ struct EditProfile {
   @State signature: string = ''
   @State avatarUrl: string = ''
   private errorTimer: number = -1
+  @StorageLink('accessToken') @Watch('onAccessTokenChange') accessToken: string = ''
 
   aboutToAppear(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+      return
+    }
     this.loadUser()
+  }
+
+  private onAccessTokenChange(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+    }
   }
 
   aboutToDisappear(): void {

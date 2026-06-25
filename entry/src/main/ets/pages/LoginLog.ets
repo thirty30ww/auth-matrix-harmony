@@ -13,9 +13,20 @@ struct LoginLog {
   @State hasMore: boolean = true
   @State loading: boolean = false
   @State errorText: string = ''
+  @StorageLink('accessToken') @Watch('onAccessTokenChange') accessToken: string = ''
 
   aboutToAppear(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+      return
+    }
     this.loadLogs()
+  }
+
+  private onAccessTokenChange(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+    }
   }
 
   private async loadLogs(resetPage?: boolean, targetPage?: number): Promise<void> {

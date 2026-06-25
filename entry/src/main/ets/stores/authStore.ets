@@ -98,6 +98,10 @@ export class AuthStore {
     httpClient.setAccessToken(snapshot.accessToken);
   }
 
+  async waitForInit(): Promise<void> {
+    await this.initPromise;
+  }
+
   get isLoggedIn(): boolean {
     return !!(AppStorage.get('accessToken') as string);
   }

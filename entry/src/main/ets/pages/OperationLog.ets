@@ -16,9 +16,20 @@ struct OperationLog {
   @State detailVisible: boolean = false
   @State detailLoading: boolean = false
   @State detail: LogOperationVO | null = null
+  @StorageLink('accessToken') @Watch('onAccessTokenChange') accessToken: string = ''
 
   aboutToAppear(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+      return
+    }
     this.loadLogs()
+  }
+
+  private onAccessTokenChange(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+    }
   }
 
   private async loadLogs(resetPage?: boolean, targetPage?: number): Promise<void> {

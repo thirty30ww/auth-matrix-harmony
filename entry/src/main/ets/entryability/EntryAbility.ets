@@ -31,12 +31,14 @@ export default class EntryAbility extends UIAbility {
       statusBarContentColor: '#FFFFFF'
     });
 
-    windowStage.loadContent('pages/Login', (err) => {
-      if (err.code) {
-        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
-        return;
-      }
-      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
+    AuthStore.getInstance().waitForInit().then(() => {
+      windowStage.loadContent('pages/Login', (err) => {
+        if (err.code) {
+          hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
+          return;
+        }
+        hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
+      });
     });
   }
 

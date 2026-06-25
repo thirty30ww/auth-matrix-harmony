@@ -10,6 +10,19 @@ struct ChangePassword {
   @State newPassword: string = ''
   @State confirmPassword: string = ''
   private errorTimer: number = -1
+  @StorageLink('accessToken') @Watch('onAccessTokenChange') accessToken: string = ''
+
+  aboutToAppear(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+    }
+  }
+
+  private onAccessTokenChange(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+    }
+  }
 
   aboutToDisappear(): void {
     this.clearError()

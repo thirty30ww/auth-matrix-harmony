@@ -16,7 +16,8 @@ struct Index {
   @StorageLink('refreshToken') refreshToken: string = ''
   @StorageLink('username') loggedUsername: string = ''
 
-  aboutToAppear(): void {
+  async aboutToAppear(): Promise<void> {
+    await authStore.waitForInit()
     this.goProfileIfLoggedIn()
   }
 

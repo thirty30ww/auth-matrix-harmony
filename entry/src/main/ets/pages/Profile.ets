@@ -13,8 +13,13 @@ struct Profile {
   @State routeToastKey: string = ''
   @State pendingToastKey: string = ''
   @StorageLink('profileRefreshVersion') @Watch('onProfileRefresh') profileRefreshVersion: number = 0
+  @StorageLink('accessToken') @Watch('onAccessTokenChange') accessToken: string = ''
 
   aboutToAppear(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+      return
+    }
     this.loadUser()
   }
 
@@ -25,6 +30,12 @@ struct Profile {
 
   private onProfileRefresh(): void {
     this.loadUser()
+  }
+
+  private onAccessTokenChange(): void {
+    if (!this.accessToken) {
+      router.replaceUrl({ url: 'pages/Login' })
+    }
   }
 
   private async loadUser(): Promise<void> {
@@ -240,7 +251,7 @@ struct Profile {
           .width('100%')
       }
       .width('100%')
-      .padding({ left: 34, right: 34, top: 42 })
+      .padding({ left: 34, right: 34, top: 60 })
     }
     .height(260)
     .width('100%')
