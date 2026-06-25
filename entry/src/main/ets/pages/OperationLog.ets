@@ -1,4 +1,4 @@
-import { promptAction, router } from '@kit.ArkUI'
+import { LengthMetrics, promptAction, router } from '@kit.ArkUI'
 import { LogOperationDTO, LogOperationVO, logApi, PageQueryDTO } from '../services/api/log'
 
 @Component
@@ -441,9 +441,9 @@ export struct OperationLogTab {
       .height('100%')
     }
     .bindSheet($$this.detailVisible, this.DetailSheet(), {
-      detents: [SheetSize.LARGE],
-      radius: { topLeft: 24, topRight: 24 },
+      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
       backgroundColor: $r('app.color.app_card_bg'),
+      radius: { topStart: LengthMetrics.vp(24), topEnd: LengthMetrics.vp(24) },
       onDisappear: () => {
         this.closeDetail()
       }
