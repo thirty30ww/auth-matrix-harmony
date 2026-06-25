@@ -1,4 +1,5 @@
 import { router } from '@kit.ArkUI'
+import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { fileApi } from '../services/api/system'
 import { UpdateUserDTO, userApi, UserVO } from '../services/api/user'
 
@@ -113,11 +114,26 @@ struct EditProfile {
     return text.substring(0, 1)
   }
 
-  private chooseAvatar(): void {
+  private async chooseAvatar(): Promise<void> {
     if (this.user === null || this.uploading) {
       return
     }
-    this.showError('预览器暂不支持选择头像，真机接入后会上传到 /file/upload/image')
+    try {
+      let photoSelectOptions = new photoAccessHelper.PhotoSelectOptions()
+      photoSelectOptions.MIMEType = photoAccessHelper.PhotoViewMIMETypes.IMAGE_TYPE
+      photoSelectOptions.maxSelectNumber = 1
+      let photoPicker = new photoAccessHelper.PhotoViewPicker()
+      let result = await photoPicker.select(photoSelectOptions)
+      if (result.photoUris && result.photoUris.length > 0) {
+        await this.uploadAvatar(result.photoUris[0])
+      }
+    } catch (e) {
+      const err = e as Error
+      if (err.message?.includes('cancel')) {
+        return
+      }
+      this.showError('选择头像失败: ' + (err.message || '未知错误'))
+    }
   }
 
   private async uploadAvatar(fileUri: string): Promise<void> {
@@ -195,7 +211,7 @@ struct EditProfile {
           .width(92)
           .height(92)
           .borderRadius(46)
-          .backgroundColor('#F3EEFF')
+          .backgroundColor($r('app.color.app_icon_bg'))
         }
 
         Stack() {
@@ -206,7 +222,7 @@ struct EditProfile {
         .width(32)
         .height(32)
         .borderRadius(16)
-        .backgroundColor(Color.White)
+        .backgroundColor($r('app.color.app_card_bg'))
         .border({ width: 1, color: $r('app.color.app_border') })
       }
       .width(98)
@@ -286,7 +302,7 @@ struct EditProfile {
       .padding({ left: 16, right: 16 })
       .fontSize(14)
       .fontColor(this.sex === value ? Color.White : $r('app.color.app_text_secondary'))
-      .backgroundColor(this.sex === value ? $r('app.color.app_primary') : '#F4F1FA')
+      .backgroundColor(this.sex === value ? $r('app.color.app_primary') : $r('app.color.app_icon_bg'))
       .borderRadius(16)
       .onClick(() => {
         this.sex = value

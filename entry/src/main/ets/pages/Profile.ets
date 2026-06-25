@@ -176,7 +176,7 @@ struct Profile {
       .width(28)
       .height(28)
       .borderRadius(8)
-      .backgroundColor('#F3EEFF')
+      .backgroundColor($r('app.color.app_icon_bg'))
 
       Column({ space: 2 }) {
         Text(label)
@@ -204,7 +204,7 @@ struct Profile {
         .height(size)
         .borderRadius(size / 2)
         .objectFit(ImageFit.Cover)
-        .border({ width: 4, color: '#B99EFF' })
+        .border({ width: 4, color: $r('app.color.app_avatar_border') })
     } else {
       Stack() {
         Text(this.getAvatarText())
@@ -215,8 +215,8 @@ struct Profile {
       .width(size)
       .height(size)
       .borderRadius(size / 2)
-      .backgroundColor(Color.White)
-      .border({ width: 4, color: '#B99EFF' })
+      .backgroundColor($r('app.color.app_avatar_bg'))
+      .border({ width: 4, color: $r('app.color.app_avatar_border') })
     }
   }
 
@@ -298,7 +298,7 @@ struct Profile {
       .width(28)
       .height(28)
       .borderRadius(8)
-      .backgroundColor('#F3EEFF')
+      .backgroundColor($r('app.color.app_icon_bg'))
 
       Column({ space: 2 }) {
         Text(title)

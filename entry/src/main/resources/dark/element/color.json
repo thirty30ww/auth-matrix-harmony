@@ -35,6 +35,18 @@
     {
       "name": "app_danger",
       "value": "#E74C3C"
+    },
+    {
+      "name": "app_icon_bg",
+      "value": "#2A1F40"
+    },
+    {
+      "name": "app_avatar_border",
+      "value": "#6B4FA0"
+    },
+    {
+      "name": "app_avatar_bg",
+      "value": "#2A1F40"
     }
   ]
 }
