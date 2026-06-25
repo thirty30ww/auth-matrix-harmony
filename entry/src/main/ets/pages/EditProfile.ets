@@ -373,6 +373,7 @@ struct EditProfile {
         this.TopBar()
       }
       .width('100%')
+      .padding({ top: 42 })
     }
     .backgroundColor($r('app.color.app_bg'))
     .width('100%')

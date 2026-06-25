@@ -429,7 +429,6 @@ struct Profile {
       .layoutWeight(1)
       .width('100%')
       .backgroundColor($r('app.color.app_bg'))
-      .margin({ top: -15 })
 
       this.BottomNav()
     }

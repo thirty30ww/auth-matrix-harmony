@@ -436,12 +436,13 @@ struct OperationLog {
               })
 
           }
-          .width('100%')
-          .padding({ left: 14, right: 14, top: 8, bottom: 8 })
-        }
-        .width('100%')
-        .backgroundColor($r('app.color.app_card_bg'))
-        .borderRadius({ bottomLeft: 24, bottomRight: 24 })
+      .width('100%')
+      .padding({ left: 14, right: 14, top: 44, bottom: 8 })
+    }
+    .width('100%')
+    .backgroundColor($r('app.color.app_card_bg'))
+    .borderRadius({ bottomLeft: 24, bottomRight: 24 })
+    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP])
 
           Column({ space: 12 }) {
             if (this.errorText) {
